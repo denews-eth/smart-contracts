@@ -21,7 +21,7 @@ async function deploy() {
             child_process.execSync('sudo rm -rf build')
 
             console.log('Deploying contract..')
-            let out = child_process.execSync('sudo PROVIDER="' + configs.provider + '" MNEMONIC="' + configs.proxy_mnemonic + '" DESCRIPTION="' + configs.contract.description + '" TICKER="' + configs.contract.ticker + '" NAME="' + configs.contract.name + '" PROXY="' + configs.proxy_address + '" OWNER="' + configs.owner_address + '" truffle deploy --network ' + configs.network + ' --reset', { stdio: 'inherit' })
+            let out = child_process.execSync('sudo PROVIDER="' + configs.provider + '" MNEMONIC="' + configs.proxy_mnemonic + '" DESCRIPTION="' + configs.contract.description + '" TICKER="' + configs.contract.ticker + '" NAME="' + configs.contract.name + '" PROXY="' + configs.proxy_address + '" OWNER="' + configs.owner_address + '" truffle deploy --network ' + configs.network + ' --reset')
 
             // Extracting address
             out = out.toString()
