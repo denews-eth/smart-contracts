@@ -1,0 +1,14 @@
+{
+    "network": "ganache",
+    "contract_address": "0x318cb94F0B0Ac8E97F93162E1b1D9f4Ba0cCB220",
+    "owner_address": "0x396655FE85A082b972B4a8586bA8Aa6756904542",
+    "owner_mnemonic": "tuna cousin glove box ball execute fluid parent fog client blur finger",
+    "contract": {
+        "name": "deNews",
+        "ticker": "DNW",
+        "description": "https://ipfs.io/ipfs/-"
+    },
+    "proxy_mnemonic": "tuna cousin glove box ball execute fluid parent fog client blur finger",
+    "proxy_address": "0x396655FE85A082b972B4a8586bA8Aa6756904542",
+    "provider": "http://localhost:7545"
+}
