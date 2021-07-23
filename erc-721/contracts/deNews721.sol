@@ -1,22 +1,27 @@
-pragma solidity ^0.5.0;
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.6;
 
-import "openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol";
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
  * @title deNews721
  * deNews721 - Smart contract for deNews NFTs
  */
-contract deNews721 is ERC721Full, Ownable {
+contract deNews721 is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
 
     mapping (string => address) private _authorsMappings;
     mapping (uint256 => string) private _tokenIdsMapping;
     mapping (string => uint256) private _tokenIdsToHashMapping;
     address openseaProxyAddress;
     address umiProxyAddress;
-    uint256 private _currentTokenId = 0;
     string public contract_ipfs_json;
     bool public proxyMintingEnabled = true;
+    using Counters for Counters.Counter;    
+    Counters.Counter private _tokenIdCounter;
 
     constructor(
         address _openseaProxyAddress,
@@ -24,11 +29,27 @@ contract deNews721 is ERC721Full, Ownable {
         string memory _ticker,
         string memory _contract_ipfs,
         address _umiProxyAddress
-    ) public ERC721Full(_name, _ticker) {
+    ) public ERC721(_name, _ticker) {
         openseaProxyAddress = _openseaProxyAddress;
         umiProxyAddress = _umiProxyAddress;
         contract_ipfs_json = _contract_ipfs;
-        _setBaseURI("https://ipfs.io/ipfs/");
+    }
+
+    function _baseURI() internal pure override returns (string memory) {
+        return "https://ipfs.io/ipfs/";
+    }
+
+    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+        super._burn(tokenId);
+    }
+
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override(ERC721, ERC721URIStorage)
+        returns (string memory)
+    {
+        return super.tokenURI(tokenId);
     }
 
     function enableProxyMinting() public onlyOwner {
@@ -95,24 +116,11 @@ contract deNews721 is ERC721Full, Ownable {
         Private method that mints the token
     */
     function mintTo(address _to, string memory _tokenURI) private returns (uint256){
-        uint256 newTokenId = _getNextTokenId();
+        uint256 newTokenId = _tokenIdCounter.current();
         _mint(_to, newTokenId);
         _setTokenURI(newTokenId, _tokenURI);
-        _incrementTokenId();
+        _tokenIdCounter.increment();
         return newTokenId;
-    }
-
-    function burnToken(uint256 _tokenId) public returns (bool){
-        _burn(msg.sender, _tokenId);
-        return true;
-    }
-
-    function _getNextTokenId() private view returns (uint256) {
-        return _currentTokenId.add(1);
-    }
-
-    function _incrementTokenId() private {
-        _currentTokenId++;
     }
 
     /*
@@ -121,7 +129,7 @@ contract deNews721 is ERC721Full, Ownable {
     function isApprovedForAll(
         address _owner,
         address _operator
-    ) public view returns (bool isOperator) {
+    ) public view override returns (bool isOperator) {
         if (_operator == address(openseaProxyAddress) || _operator == address(umiProxyAddress)) {
             return true;
         }

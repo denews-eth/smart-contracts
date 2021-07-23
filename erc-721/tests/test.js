@@ -29,7 +29,7 @@ async function main() {
     const approved = await nftContract.methods.isApprovedForAll(configs.owner_address, configs.proxy_address).call();
     console.log('Is proxy approved: ' + approved)
     let ended = false
-    let i = 1;
+    let i = 0;
     try {
       while (!ended) {
         const owner = await nftContract.methods.ownerOf(i).call();

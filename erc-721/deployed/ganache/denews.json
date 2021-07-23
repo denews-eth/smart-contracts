@@ -1,6 +1,6 @@
 {
     "network": "ganache",
-    "contract_address": "0x7e1FD02E0D28C75AA78092DaA1f4957f0A815F1a",
+    "contract_address": "0x5D12ad6D40B56675cE3DD67dAEdF0a692Eb39515",
     "owner_address": "0x396655FE85A082b972B4a8586bA8Aa6756904542",
     "owner_mnemonic": "tuna cousin glove box ball execute fluid parent fog client blur finger",
     "contract": {

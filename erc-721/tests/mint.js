@@ -33,7 +33,7 @@ async function main() {
     try {
       console.log('Trying minting NFT...')
       const result = await nftContract.methods
-        .mintNFT('0x000000000000000000000000000009')
+        .mintNFT('0x00000000000000000000000000000' + new Date().getTime())
         .send({ from: configs.owner_address });
       console.log("NFT minted! Transaction: " + result.transactionHash);
       console.log(result)

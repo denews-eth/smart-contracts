@@ -29,7 +29,7 @@ async function main() {
   try {
     console.log('Trying minting NFT...')
     const result = await nftContract.methods
-      .proxyMintNFT(configs.owner_address, "SomeIPFSHash")
+      .proxyMintNFT(configs.owner_address, "IPFS" + new Date().getTime())
       .send({ from: configs.proxy_address });
     console.log("Minted NFT! Transaction: " + result.transactionHash);
     console.log(result)
